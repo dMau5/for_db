@@ -56,6 +56,7 @@ with open('update_graph.pickle', 'rb') as u:
     g = load(u)
 
 stage = 1
+seen = set()
 while True:
     st_reactants = set()
     for m in zinc:
@@ -63,8 +64,11 @@ while True:
             scc = g._succ[m]
             if scc:
                 for r in scc:
-                    for p in g._succ[r]:
-                        st_reactants.add(p)
+                    if r not in seen:
+                        seen.add(r)
+                        for p in g._succ[r]:
+                            st_reactants.add(p)
+    print('stage', stage)
     if st_reactants:
         with open(f'Acima/graph{stage}.pickle', 'wb') as w1:
             dump(st_reactants, w1)
