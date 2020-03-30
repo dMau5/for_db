@@ -1,21 +1,21 @@
 from pickle import load, dump
 from networkx import DiGraph
 
-# set of building blocks
-with open('Acima/ids_of_blocks.pickle', 'rb') as f:
-    bb = load(f)
-
-# set of molecules for what count of atoms < 6 atoms
-with open('Acima/easy_molecules.pickle', 'rb') as f1:
-    easy = load(f1)
-
-# all USPTO reactions dict: key: reaction id, value: dict of reactants and products
-with open('Acima/reactions_and_components.pickle', 'rb') as f2:
-    data = load(f2)
-
-zinc = bb.union(easy)
-
-print('all_reactions -->', (len(data)))
+# # set of building blocks
+# with open('Acima/ids_of_blocks.pickle', 'rb') as f:
+#     bb = load(f)
+#
+# # set of molecules for what count of atoms < 6 atoms
+# with open('Acima/easy_molecules.pickle', 'rb') as f1:
+#     easy = load(f1)
+#
+# # all USPTO reactions dict: key: reaction id, value: dict of reactants and products
+# with open('Acima/reactions_and_components.pickle', 'rb') as f2:
+#     data = load(f2)
+#
+# zinc = bb.union(easy)
+#
+# print('all_reactions -->', (len(data)))
 
 # g = DiGraph()
 # added_reactions = set()
@@ -34,8 +34,9 @@ print('all_reactions -->', (len(data)))
 #         if m in zinc:
 #             g.nodes[m]['bb'] = 1
 with open('USPTO_graph.pickle', 'rb') as q:
-    g = load(q)
+    gg = load(q)
 
+g = DiGraph(gg)
 while True:
     remove = []
     for x in g.nodes():
@@ -47,8 +48,8 @@ while True:
     if remove:
         for rm in remove:
             succ = g._succ[rm]
-            g.remove_nodes_from(succ)
             g.remove_node(rm)
+            g.remove_nodes_from(succ)
     else:
         break
 with open('update_graph.pickle', 'wb') as u:
