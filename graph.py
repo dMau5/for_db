@@ -17,27 +17,31 @@ zinc = bb.union(easy)
 
 print('all_reactions -->', (len(data)))
 
-g = DiGraph()
-added_reactions = set()
-while data:
-    r_id, components = data.popitem()
-    if r_id in added_reactions:
-        continue
-
-    r_node = f'r_{r_id}'
-    g.add_node(r_node)
-    added_reactions.add(r_id)
-    for m in components['products']:
-        g.add_edge(r_node, m)
-    for m in components['reactants']:
-        g.add_edge(m, r_node)
-        if m in zinc:
-            g.nodes[m]['bb'] = 1
+# g = DiGraph()
+# added_reactions = set()
+# while data:
+#     r_id, components = data.popitem()
+#     if r_id in added_reactions:
+#         continue
+#
+#     r_node = f'r_{r_id}'
+#     g.add_node(r_node)
+#     added_reactions.add(r_id)
+#     for m in components['products']:
+#         g.add_edge(r_node, m)
+#     for m in components['reactants']:
+#         g.add_edge(m, r_node)
+#         if m in zinc:
+#             g.nodes[m]['bb'] = 1
+with open('USPTO_graph.pickle', 'rb') as q:
+    g = load(q)
 
 while True:
     remove = []
     for x in g.nodes():
         if isinstance(x, int):
+            if 'bb' in g.nodes[x]:
+                continue
             if not g._pred[x]:
                 remove.append(x)
     if remove:
