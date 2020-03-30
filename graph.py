@@ -15,10 +15,6 @@ with open('Acima/reactions_and_components.pickle', 'rb') as f2:
 
 zinc = bb.union(easy)
 
-# # select all data of reactions from database and save pairs of tuples (ids reactant, ids product)
-# with open('Acima/ready_0.pickle', 'wb') as w:
-#     dump(al, w)
-
 print('all_reactions -->', (len(data)))
 
 g = DiGraph()
@@ -37,3 +33,19 @@ while data:
         g.add_edge(m, r_node)
         if m in zinc:
             g.nodes[m]['bb'] = 1
+
+while True:
+    remove = []
+    for x in g.nodes():
+        if isinstance(x, int):
+            if not g._pred[x]:
+                remove.append(x)
+    if remove:
+        for rm in remove:
+            succ = g._succ[rm]
+            g.remove_nodes_from(succ)
+            g.remove_node(rm)
+    else:
+        break
+with open('update_graph.pickle', 'wb') as u:
+    dump(g, u)
