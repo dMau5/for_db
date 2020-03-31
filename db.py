@@ -2,6 +2,7 @@ from pickle import load, dump
 from pony.orm import db_session
 from CGRdb import Molecule
 
+
 n = 0
 size = 1000
 data = []
@@ -38,3 +39,29 @@ with open(f'Acima/graph_None.pickle', 'rb') as f2:
 print(common)
 print('ff', len(c))
 print('file -->')
+
+# ______
+
+for stage in range(8):
+    # print('stage', stage)
+    with open(f'Acima/graph_{stage}.pickle', 'rb') as f:
+        mols = load(f)
+    for stag in range(8):
+        if stage == stag:
+            continue
+        # print('stage', stag)
+        with open(f'Acima/graph_{stag}.pickle', 'rb') as f1:
+            ms = load(f1)
+        ie = mols.intersection(ms)
+        print(stage, stag, 'inter', len(ie))
+
+# print('None')
+with open(f'Acima/graph_None.pickle', 'rb') as f2:
+    mos = load(f2)
+    for st in range(8):
+        # print('stage', st)
+        with open(f'Acima/graph_{st}.pickle', 'rb') as f3:
+            s = load(f3)
+        ie = mos.intersection(s)
+        print(None, st, 'inter', len(ie))
+exit()
