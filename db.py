@@ -38,7 +38,6 @@ with open(f'Acima/graph_None.pickle', 'rb') as f2:
                     data = []
 print(common)
 print('ff', len(c))
-print('file -->')
 
 # ______
 
@@ -64,4 +63,3 @@ with open(f'Acima/graph_None.pickle', 'rb') as f2:
             s = load(f3)
         ie = mos.intersection(s)
         print(None, st, 'inter', len(ie))
-exit()
